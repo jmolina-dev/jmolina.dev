@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan José Molina | Systems & DevOps Engineer</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+    <!-- Material Symbols Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    
+    <!-- Local Stylesheet -->
+    <link href="css/style.css" rel="stylesheet"/>
+    <!-- Local Script -->
+    <script defer src="js/main.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-200/55 dark:border-slate-800/40">
+        <div class="max-w-maxwidth mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="#hero" class="font-serif text-xl font-bold text-gradient-primary">jmolina.dev</a>
+            
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#proyectos" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Proyectos</a>
+                <a href="#experiencia" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Experiencia</a>
+                <a href="#habilidades" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Stack Técnico</a>
+                <a href="#contacto" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Contacto</a>
+            </nav>
+
+            <!-- Actions (Theme Toggle & Burger) -->
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-lg text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all">
+                    <span id="theme-toggle-icon" class="material-symbols-outlined text-2xl">light_mode</span>
+                </button>
+                <button id="menu-burger" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu Drawer -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end">
+        <div class="w-3/4 max-w-sm bg-white dark:bg-slate-900 h-full p-8 shadow-2xl flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-12">
+                    <span class="font-serif text-xl font-bold text-gradient-primary">jmolina.dev</span>
+                    <button id="menu-close" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <span class="material-symbols-outlined text-2xl">close</span>
+                    </button>
+                </div>
+                <nav class="flex flex-col gap-6">
+                    <a href="#proyectos" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Proyectos</a>
+                    <a href="#experiencia" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Experiencia</a>
+                    <a href="#habilidades" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Stack Técnico</a>
+                    <a href="#contacto" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Contacto</a>
+                </nav>
+            </div>
+            <div class="flex gap-4 justify-center">
+                <a href="#" class="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">terminal</span>
+                </a>
+                <a href="#" class="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">dns</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow pt-16">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="py-24 max-w-maxwidth mx-auto px-6 flex flex-col justify-center items-center text-center min-h-[85vh]">
+            <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-6">Disponible para Consultorías</span>
+            <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight tracking-tight max-w-3xl mb-6">
+                Hola, soy <span class="text-gradient-primary">Juan José Molina</span>
+            </h1>
+            <p class="font-sans text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed">
+                Ingeniero especializado en <strong class="text-slate-800 dark:text-slate-200">Sistemas, DevOps y Backend</strong>. Diseñador de arquitecturas en la nube, despliegues Kubernetes en metal y plataformas educativas de alta concurrencia.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="#contacto" class="px-8 py-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-500 shadow-lg shadow-teal-500/20 dark:shadow-teal-900/30 transition-all text-center">
+                    Trabajemos juntos
+                </a>
+                <a href="#proyectos" class="px-8 py-4 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold rounded-xl hover:brightness-105 transition-all text-center">
+                    Ver mis proyectos
+                </a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="proyectos" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Proyectos Destacados</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Selección de proyectos tecnológicos que he liderado, abarcando desde desarrollo de plataformas hasta arquitectura de sistemas.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 (Nivel0) -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-teal-500/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="h-56 bg-gradient-to-br from-teal-700 to-cyan-800 flex items-center justify-center text-white p-6 relative">
+                            <div class="absolute inset-0 bg-black/10"></div>
+                            <span class="material-symbols-outlined text-7xl opacity-90 group-hover:scale-105 transition-transform duration-300">dns</span>
+                            <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-xs uppercase tracking-wider font-semibold">LMS &amp; Academias</div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="font-serif text-2xl font-bold mb-3 group-hover:text-teal-500 transition-colors">Nivel0 Academy</h3>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                                Plataforma LMS interactiva para enseñar informática desde cero. Arquitectura de microservicios robusta, simulación de hardware y contenedorización de laboratorios interactivos en tiempo real.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0 flex gap-4">
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Go</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Podman</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">HTMX</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Tailwind</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 (Bare-Metal K8s Cluster) -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-teal-500/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="h-56 bg-gradient-to-br from-slate-800 to-slate-950 flex items-center justify-center text-white p-6 relative">
+                            <div class="absolute inset-0 bg-black/10"></div>
+                            <span class="material-symbols-outlined text-7xl opacity-90 group-hover:scale-105 transition-transform duration-300">terminal</span>
+                            <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-xs uppercase tracking-wider font-semibold">Infraestructura</div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="font-serif text-2xl font-bold mb-3 group-hover:text-teal-500 transition-colors">Clúster Kubernetes Bare-Metal</h3>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                                Infraestructura autoalojada y optimizada para producción con AlmaLinux 10 y k0s. Enrutamiento eBPF con Cilium, hardening perimetral de firewalls, Traefik como Ingress Controller y persistencia en volumen local dinámico.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0 flex gap-4">
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">AlmaLinux</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">k0s</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Cilium</span>
+                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">eBPF</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career / Experience Timeline Section -->
+        <section id="experiencia" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-950/20">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Trayectoria Profesional</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Una cronología detallada de mi experiencia y roles desempeñados en ingeniería de software y sistemas.</p>
+            </div>
+            
+            <div class="relative max-w-3xl mx-auto flex flex-col">
+                
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="hidden md:block text-right pr-4 pt-1">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">2024 - Presente</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Nivel0 Academy</h4>
+                        <p class="text-sm text-slate-500">Madrid, España (Remoto)</p>
+                    </div>
+                    
+                    <!-- Timeline circle point -->
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">2024 - Presente</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Lead Systems &amp; DevOps Engineer</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Nivel0 Academy</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+                            Dirección de la infraestructura y automatizaciones. Diseño y despliegue del entorno en producción multi-nodo con Kubernetes sobre servidores bare-metal, y optimización de microservicios escritos en Go.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> Configuración de Kubernetes con k0s y enrutamiento eBPF con Cilium.</li>
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> Gestión de despliegues rootless dinámicos mediante Podman Quadlets.</li>
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> Pipelines CI/CD seguras en GitHub Actions con auditorías gosec de seguridad.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
+                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">2022 - 2024</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Tech Consultancy Ltd</h4>
+                        <p class="text-sm text-slate-500">Barcelona, España</p>
+                    </div>
+                    
+                    <!-- Timeline circle point -->
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
+                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">2022 - 2024</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Senior DevOps Engineer</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Tech Consultancy Ltd</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+                            Responsable de migración de arquitecturas legacy en servidores on-premise hacia entornos contenerizados en la nube pública (AWS y GCP). Hardening de seguridad de SO y bases de datos relacionales PostgreSQL.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 md:inline-block md:text-left">
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Infraestructura como Código (IaC) utilizando Terraform y Ansible.</li>
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Configuración de Kubernetes empresariales escalables con EKS y GKE.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16">
+                    <div class="hidden md:block text-right pr-4 pt-1">
+                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">2020 - 2022</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Software Solutions House</h4>
+                        <p class="text-sm text-slate-500">Valencia, España</p>
+                    </div>
+                    
+                    <!-- Timeline circle point -->
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">2020 - 2022</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Full Stack Developer</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Software Solutions House</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+                            Desarrollo de lógica de backend en arquitecturas distribuidas con Go e interfaces de usuario web ágiles y funcionales.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Desarrollo de APIs REST y gRPC con rendimiento de alta concurrencia.</li>
+                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Integración y pruebas automatizadas en entornos Docker locales.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Tech Stack Grid Section -->
+        <section id="habilidades" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Habilidades &amp; Stack Técnico</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Tecnologías y herramientas que domino en el día a día para diseñar y construir software robusto.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card Category 1 -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-teal-500 text-3xl">dns</span>
+                        <h3 class="font-serif text-xl font-bold">DevOps &amp; Infra</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Kubernetes (k0s, EKS)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Cilium (eBPF)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Docker &amp; Podman</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Terraform &amp; Ansible</span> <span class="text-slate-500 text-xs font-bold uppercase">Intermedio</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Linux (AlmaLinux, Debian)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card Category 2 -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-teal-500 text-3xl">code</span>
+                        <h3 class="font-serif text-xl font-bold">Desarrollo Backend</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Go (Golang)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Python</span> <span class="text-slate-500 text-xs font-bold uppercase">Intermedio</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">PostgreSQL</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Redis</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">APIs REST / gRPC</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card Category 3 -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-teal-500 text-3xl">terminal</span>
+                        <h3 class="font-serif text-xl font-bold">Herramientas &amp; QA</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">GitHub Actions</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Git &amp; GitFlow</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">gosec &amp; Linters</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Nginx &amp; Traefik</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
+                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Prometheus &amp; Grafana</span> <span class="text-slate-500 text-xs font-bold uppercase">Intermedio</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-6 inline-block">Contacto</span>
+                    <h2 class="font-serif text-4xl font-bold mb-6">Hablemos de tu próximo gran proyecto</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                        ¿Tienes problemas de escalabilidad en tu infraestructura? ¿Necesitas asesoramiento técnico para migrar a Kubernetes o buscas incorporar un perfil técnico senior a tu equipo? Contáctame y busquemos la mejor solución.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-teal-500">mail</span>
+                            <a href="mailto:hola@jmolina.dev" class="text-slate-700 dark:text-slate-300 hover:text-teal-500 transition-colors">hola@jmolina.dev</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-teal-500">pin_drop</span>
+                            <span class="text-slate-700 dark:text-slate-300">Madrid, España (Disponible para remoto global)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm">
+                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('¡Mensaje enviado (simulación)!');">
+                        <div>
+                            <label for="name" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Nombre</label>
+                            <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Correo Electrónico</label>
+                            <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Mensaje</label>
+                            <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-500 transition-all shadow-lg shadow-teal-500/20">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-12">
+        <div class="max-w-maxwidth mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-sm text-slate-500">&copy; 2026 Juan José Molina. Todos los derechos reservados.</p>
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="text-slate-500 hover:text-teal-500 transition-colors">GitHub</a>
+                <a href="#" class="text-slate-500 hover:text-teal-500 transition-colors">LinkedIn</a>
+                <a href="../index.html" class="text-slate-500 hover:text-teal-500 transition-colors font-semibold">nivel0.net</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
