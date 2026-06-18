@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Clúster Kubernetes Bare-Metal: AlmaLinux 10, k0s y Cilium | jmolina.dev blog</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="../js/tailwind-config.js"></script>
+    
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script defer src="../js/main.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-[-10]">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal-500/10 dark:bg-teal-500/5 blur-[120px] animate-blob-float-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-cyan-500/10 dark:bg-cyan-500/5 blur-[120px] animate-blob-float-2"></div>
+    </div>
+
+    <header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-200/55 dark:border-slate-800/40">
+        <div class="max-w-maxwidth mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="../index.html" class="font-serif text-xl font-bold text-gradient-primary">jmolina.dev</a>
+            
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="../index.html#habilidades" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Stack Técnico</a>
+                <a href="../index.html#trayectoria" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Trayectoria</a>
+                <a href="../index.html#blog" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Blog</a>
+                <a href="../index.html#contacto" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Contacto</a>
+                <a href="../index.html#contacto" class="px-3.5 py-1.5 bg-teal-600/10 text-teal-600 dark:text-teal-400 dark:bg-teal-500/10 hover:bg-teal-600 hover:text-white dark:hover:bg-teal-500 dark:hover:text-slate-950 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">mail</span> Solicitar CV
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-lg text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all">
+                    <span id="theme-toggle-icon" class="material-symbols-outlined text-2xl">light_mode</span>
+                </button>
+                <button id="menu-burger" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        <article class="py-12 px-6 md:px-0">
+            <div class="max-w-3xl mx-auto mb-8">
+                <nav class="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 mb-6">
+                    <a href="../index.html" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Inicio</a>
+                    <span class="material-symbols-outlined text-xs">chevron_right</span>
+                    <a href="../index.html#blog" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Blog</a>
+                    <span class="material-symbols-outlined text-xs">chevron_right</span>
+                    <span class="text-slate-800 dark:text-slate-200 font-bold truncate">Kubernetes Bare-Metal</span>
+                </nav>
+
+                <a href="../index.html#blog" class="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 hover:underline font-semibold text-sm mb-6">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Volver al blog
+                </a>
+
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs select-none">
+                        Sistemas y DevOps
+                    </span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">schedule</span> 15 min de lectura
+                    </span>
+                </div>
+
+                <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-slate-100 leading-tight mb-6">
+                    Clúster Kubernetes Bare-Metal: AlmaLinux 10, k0s y Cilium (Single-Node)
+                </h1>
+
+                <div class="flex items-center gap-4 border-y border-slate-200/60 dark:border-slate-800/50 py-4">
+                    <div class="w-10 h-10 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
+                        JM
+                    </div>
+                    <div>
+                        <div class="font-semibold text-sm text-slate-800 dark:text-slate-200">Juan José Molina</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Publicado el 18 de Junio, 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6 font-medium">
+                    Esta guía documenta el despliegue directo de un clúster Kubernetes de un solo nodo para producción en un servidor bare-metal. El stack técnico utiliza AlmaLinux 10, k0s, Cilium eBPF y Traefik, priorizando la eficiencia de recursos y el aislamiento de seguridad.
+                </p>
+
+                <div class="bg-amber-500/10 border-l-4 border-amber-500 p-6 rounded-r-xl my-8">
+                    <div class="flex gap-4">
+                        <span class="material-symbols-outlined text-amber-500 text-3xl select-none">warning</span>
+                        <div>
+                            <h4 class="font-serif text-lg font-bold text-amber-800 dark:text-amber-350 mb-2">⚠️ Consideraciones multi-nodo</h4>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                                La arquitectura detallada a continuación está estrictamente diseñada para un único servidor físico. Si requieres escalar a múltiples nodos, la topología cambia:
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-400 text-sm">
+                                <li><strong>Roles:</strong> El manifiesto de infraestructura (k0sctl.yaml) debe separar las máquinas físicas asignando roles de <em>controller</em> (plano de control ciego) y <em>worker</em> (nodos de ejecución).</li>
+                                <li><strong>Red de Pods:</strong> Cilium necesitará establecer túneles (Geneve/VXLAN) o habilitar el enrutamiento nativo con BGP para que los pods de diferentes nodos físicos puedan verse entre sí.</li>
+                                <li><strong>Entrada de Tráfico:</strong> No puedes usar hostPort en Traefik si tienes varios nodos. Deberás configurar un anuncio L2 o BGP (nativamente con Cilium o añadiendo MetalLB) para aprovisionar IPs externas a servicios de tipo LoadBalancer.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    1. Seguridad perimetral y hardening
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    En un clúster de un solo nodo sin un firewall físico dedicado, la seguridad recae en el kernel de Linux. AlmaLinux 10 utiliza nftables. Implementa firewalld para establecer las reglas de acceso.
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-slate-500"># Instalar y activar firewalld</span>
+sudo dnf install firewalld
+sudo systemctl enable --now firewalld
+
+<span class="text-slate-500"># Exponer estrictamente HTTP, HTTPS y SSH</span>
+sudo firewall-cmd --zone=public --add-service=http --permanent
+sudo firewall-cmd --zone=public --add-service=https --permanent
+sudo firewall-cmd --zone=public --add-service=ssh --permanent
+
+<span class="text-slate-500"># Bloquear el acceso público al API de Kubernetes (6443)</span>
+sudo firewall-cmd --zone=public --remove-port=6443/tcp --permanent
+sudo firewall-cmd --reload</code></pre>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Protege el puerto 22 contra ataques de fuerza bruta usando Fail2ban:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">sudo dnf install epel-release -y
+sudo dnf install fail2ban -y</code></pre>
+                </div>
+
+                <div class="bg-teal-500/5 border-l-4 border-teal-500 p-6 rounded-r-xl my-6">
+                    <div class="flex gap-4">
+                        <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-2xl select-none">info</span>
+                        <div>
+                            <h5 class="font-serif text-base text-slate-800 dark:text-slate-100 font-bold mb-1">Nota sobre SELinux</h5>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                                Si utilizas volúmenes locales dinámicos, el aislamiento estricto de SELinux en AlmaLinux puede bloquear la escritura de los contenedores. Pásalo temporalmente a modo permisivo (<code class="bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded text-slate-800 dark:text-slate-200 font-mono text-sm">sudo setenforce 0</code>) o etiqueta correctamente los directorios físicos de persistencia con <code class="bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded text-slate-800 dark:text-slate-200 font-mono text-sm">container_file_t</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    2. Despliegue declarativo con k0sctl
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Define la infraestructura como código (IaC) para evitar la configuración manual por SSH. Usaremos k0sctl para inyectar k0s.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Para que Cilium gestione todo el enrutamiento eBPF, desactiva explícitamente kube-proxy y el proveedor de red por defecto en la configuración.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Crea el archivo <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">k0sctl.yaml</code> en tu máquina local:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-teal-400">apiVersion</span>: k0sctl.k0sproject.io/v1beta1
+<span class="text-teal-400">kind</span>: Cluster
+<span class="text-teal-400">metadata</span>:
+  <span class="text-teal-400">name</span>: k0s-cluster
+<span class="text-teal-400">spec</span>:
+  <span class="text-teal-400">hosts</span>:
+  - <span class="text-teal-400">ssh</span>:
+      <span class="text-teal-400">address</span>: &lt;IP_DEL_SERVIDOR&gt;
+      <span class="text-teal-400">user</span>: almalinux
+      <span class="text-teal-400">port</span>: 22
+      <span class="text-teal-400">keyPath</span>: ~/.ssh/tu_llave_privada
+    <span class="text-teal-400">role</span>: single
+  <span class="text-teal-400">k0s</span>:
+    <span class="text-teal-400">config</span>:
+      <span class="text-teal-400">spec</span>:
+        <span class="text-teal-400">network</span>:
+          <span class="text-teal-400">provider</span>: custom
+          <span class="text-teal-400">podCIDR</span>: 10.244.0.0/16
+          <span class="text-teal-400">serviceCIDR</span>: 10.96.0.0/12
+        <span class="text-teal-400">kubeProxy</span>:
+          <span class="text-teal-400">disabled</span>: true</code></pre>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Ejecuta el despliegue desde tu terminal:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">k0sctl apply --config k0sctl.yaml</code></pre>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    3. Red eBPF: inyección de Cilium
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    El clúster está desplegado pero sin red (estado <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">NotReady</code>). Inyecta Cilium desde tu máquina local usando su CLI oficial.
+                </p>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso A: instalar la CLI de Cilium (local)
+                </h3>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+curl -L --fail -o cilium-linux-amd64.tar.gz "https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-amd64.tar.gz"
+sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin</code></pre>
+                </div>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso B: desplegar el CNI en el clúster
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Al no tener kube-proxy, debes indicarle a Cilium la IP exacta del API Server para que pueda enrutar el tráfico de sistema:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">cilium install \
+  --set kubeProxyReplacement=true \
+  --set k8sServiceHost=&lt;IP_DEL_SERVIDOR&gt; \
+  --set k8sServicePort=6443</code></pre>
+                </div>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso C: verificación
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Comprueba que los programas eBPF se han compilado y los agentes están corriendo correctamente en el nodo:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">cilium status --wait</code></pre>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    4. Almacenamiento persistente dinámico
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Kubernetes bare-metal carece de provisionadores de discos en la nube (como los EBS de AWS). Instala Local Path Provisioner para que las aplicaciones (ej. bases de datos SQLite/PostgreSQL) puedan reclamar carpetas del disco duro físico de forma automática mediante PVCs.
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-slate-500"># Desplegar el controlador</span>
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.35/deploy/local-path-storage.yaml
+
+<span class="text-slate-500"># Forzarlo como la clase de almacenamiento predeterminada</span>
+kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'</code></pre>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    5. Ingress controller: Traefik
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Para gestionar el tráfico entrante HTTP/gRPC y los certificados SSL automáticamente, utiliza Traefik. En una topología Single-Node, los puertos del Ingress se mapean directamente a los puertos físicos del servidor (hostPort).
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Crea <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">traefik-values.yaml</code>:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-teal-400">service</span>:
+  <span class="text-teal-400">type</span>: ClusterIP
+  <span class="text-teal-400">ports</span>:
+    <span class="text-teal-400">web</span>:
+      <span class="text-teal-400">port</span>: 8000
+      <span class="text-teal-400">expose</span>:
+        <span class="text-teal-400">default</span>: true
+      <span class="text-teal-400">exposedPort</span>: 80
+      <span class="text-teal-400">hostPort</span>: 80
+    <span class="text-teal-400">websecure</span>:
+      <span class="text-teal-400">port</span>: 8443
+      <span class="text-teal-400">expose</span>:
+        <span class="text-teal-400">default</span>: true
+      <span class="text-teal-400">exposedPort</span>: 443
+      <span class="text-teal-400">hostPort</span>: 443
+<span class="text-teal-400">persistence</span>:
+  <span class="text-teal-400">enabled</span>: true
+  <span class="text-teal-400">storageClass</span>: "local-path"
+  <span class="text-teal-400">path</span>: "/data"
+  <span class="text-teal-400">size</span>: 128Mi
+<span class="text-teal-400">additionalArguments</span>:
+  - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+  - "--certificatesresolvers.letsencrypt.acme.email=admin@tudominio.com"
+  - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"</code></pre>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Aplica la configuración vía Helm:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">helm repo add traefik https://helm.traefik.io/traefik
+helm repo update
+helm upgrade --install traefik traefik/traefik -n kube-system -f traefik-values.yaml</code></pre>
+                </div>
+
+                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mt-12 mb-12">
+                    Con este paso, el clúster está 100% operativo, asegurado, y listo para recibir manifiestos de aplicaciones con enrutamiento SSL nativo y persistencia local de datos.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-12">
+        <div class="max-w-maxwidth mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-sm text-slate-500">&copy; 2026 Juan José Molina. Todos los derechos reservados.</p>
+            <div class="flex gap-6 text-sm">
+                <a href="https://github.com/jmolina-dev" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-teal-500 transition-colors">GitHub</a>
+                <a href="https://www.linkedin.com/in/jmolinaperez" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-teal-500 transition-colors">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end">
+        <div class="w-3/4 max-w-sm bg-white dark:bg-slate-900 h-full p-8 shadow-2xl flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-12">
+                    <span class="font-serif text-xl font-bold text-gradient-primary">jmolina.dev</span>
+                    <button id="menu-close" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <span class="material-symbols-outlined text-2xl">close</span>
+                    </button>
+                </div>
+                <nav class="flex flex-col gap-6">
+                    <a href="../index.html#habilidades" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-teal-500">Stack Técnico</a>
+                    <a href="../index.html#trayectoria" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-teal-500">Trayectoria</a>
+                    <a href="../index.html#blog" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-teal-500">Blog</a>
+                    <a href="../index.html#contacto" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-teal-500">Contacto</a>
+                    <a href="../index.html#contacto" class="mt-4 px-4 py-3 bg-teal-600 text-white font-bold rounded-xl text-center text-sm shadow-md hover:bg-teal-500 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-lg">mail</span> Solicitar CV
+                    </a>
+                </nav>
+            </div>
+            <div class="flex gap-4 justify-center">
+                <a href="https://github.com/jmolina-dev" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-teal-500 hover:border-teal-500 transition-all" title="GitHub">
+                    <span class="material-symbols-outlined">terminal</span>
+                </a>
+                <a href="https://www.linkedin.com/in/jmolinaperez" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-teal-500 hover:border-teal-500 transition-all" title="LinkedIn">
+                    <span class="material-symbols-outlined">dns</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Copy to clipboard functionality
+        function copyToClipboard(button) {
+            const codeElement = button.closest('.relative').querySelector('code');
+            const text = codeElement.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const span = button.querySelector('span:not(.material-symbols-outlined)');
+                const icon = button.querySelector('.material-symbols-outlined');
+                span.textContent = 'Copiado';
+                icon.textContent = 'done';
+                button.classList.add('bg-teal-600', 'text-white');
+                setTimeout(() => {
+                    span.textContent = 'Copiar';
+                    icon.textContent = 'content_copy';
+                    button.classList.remove('bg-teal-600', 'text-white');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

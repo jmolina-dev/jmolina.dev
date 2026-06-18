@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Definitions for gradients and glows -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#042f2e"/>
+    </linearGradient>
+    <linearGradient id="serverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bgGrad)" />
+  
+  <!-- Grid pattern overlay -->
+  <path d="M 0,50 L 800,50 M 0,100 L 800,100 M 0,150 L 800,150 M 0,200 L 800,200 M 0,250 L 800,250 M 0,300 L 800,300 M 0,350 L 800,350 M 0,400 L 800,400" stroke="#0f766e" stroke-width="0.5" opacity="0.1" />
+  <path d="M 100,0 L 100,450 M 200,0 L 200,450 M 300,0 L 300,450 M 400,0 L 400,450 M 500,0 L 500,450 M 600,0 L 600,450 M 700,0 L 700,450" stroke="#0f766e" stroke-width="0.5" opacity="0.1" />
+
+  <!-- Network Circuit Lines -->
+  <path d="M 100,225 L 300,225 L 350,150 L 450,150 L 500,225 L 700,225" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.4" stroke-dasharray="8 4" />
+  <path d="M 200,300 L 350,300 L 400,350 L 600,350" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.3" />
+
+  <!-- Server Rack Unit -->
+  <g transform="translate(150, 100)">
+    <!-- Chassis Outer -->
+    <rect x="0" y="0" width="500" height="250" rx="12" fill="url(#serverGrad)" stroke="#334155" stroke-width="3" />
+    
+    <!-- Rack Ears / Mounting Brackets -->
+    <rect x="-15" y="20" width="15" height="60" rx="4" fill="#475569" />
+    <circle cx="-7.5" cy="35" r="3" fill="#1e293b" />
+    <circle cx="-7.5" cy="65" r="3" fill="#1e293b" />
+    <rect x="500" y="20" width="15" height="60" rx="4" fill="#475569" />
+    <circle cx="507.5" cy="35" r="3" fill="#1e293b" />
+    <circle cx="507.5" cy="65" r="3" fill="#1e293b" />
+
+    <!-- Vent Grille (Rows of small slots) -->
+    <g opacity="0.2" fill="#64748b">
+      <!-- Row 1 -->
+      <rect x="40" y="40" width="10" height="150" rx="2" />
+      <rect x="60" y="40" width="10" height="150" rx="2" />
+      <rect x="80" y="40" width="10" height="150" rx="2" />
+      <rect x="100" y="40" width="10" height="150" rx="2" />
+      <rect x="120" y="40" width="10" height="150" rx="2" />
+      <rect x="140" y="40" width="10" height="150" rx="2" />
+      <rect x="160" y="40" width="10" height="150" rx="2" />
+      <rect x="180" y="40" width="10" height="150" rx="2" />
+    </g>
+
+    <!-- Glowing Interface Grid (Digital dashboard style) -->
+    <rect x="220" y="40" width="240" height="110" rx="8" fill="#020617" stroke="#1e293b" stroke-width="2" />
+    
+    <!-- Graphic Wave / Nodes inside display -->
+    <path d="M 230,110 Q 260,70 290,100 T 350,80 T 410,120 T 450,90" fill="none" stroke="#0d9488" stroke-width="2" />
+    <path d="M 230,110 Q 260,70 290,100 T 350,80 T 410,120 T 450,90 L 450,140 L 230,140 Z" fill="url(#bgGrad)" opacity="0.2" />
+    
+    <!-- Pulse Node points -->
+    <circle cx="290" cy="100" r="4" fill="#2dd4bf" filter="url(#glow)" />
+    <circle cx="350" cy="80" r="4" fill="#2dd4bf" filter="url(#glow)" />
+    <circle cx="410" cy="120" r="4" fill="#06b6d4" />
+
+    <!-- Ports and Connection Cables -->
+    <g transform="translate(220, 170)">
+      <!-- Port 1 -->
+      <rect x="0" y="0" width="30" height="20" rx="3" fill="#334155" />
+      <rect x="5" y="4" width="20" height="12" fill="#0f172a" />
+      <!-- Glow active -->
+      <rect x="11" y="8" width="8" height="4" fill="#14b8a6" />
+
+      <!-- Port 2 -->
+      <rect x="45" y="0" width="30" height="20" rx="3" fill="#334155" />
+      <rect x="5" y="4" transform="translate(45, 0)" width="20" height="12" fill="#0f172a" />
+      <rect x="11" y="8" transform="translate(45, 0)" width="8" height="4" fill="#14b8a6" />
+
+      <!-- Port 3 -->
+      <rect x="90" y="0" width="30" height="20" rx="3" fill="#334155" />
+      <rect x="5" y="4" transform="translate(90, 0)" width="20" height="12" fill="#0f172a" />
+
+      <!-- Port 4 (Fiber / SFP connected) -->
+      <rect x="135" y="0" width="30" height="20" rx="3" fill="#334155" />
+      <rect x="5" y="4" transform="translate(135, 0)" width="20" height="12" fill="#020617" />
+      <!-- Fiber patch cable plug -->
+      <path d="M 145,10 L 165,10 C 175,10 180,25 200,25 L 250,25" fill="none" stroke="#f43f5e" stroke-width="3" />
+      <circle cx="145" cy="10" r="2" fill="#f43f5e" filter="url(#glow)" />
+    </g>
+
+    <!-- Indicators LEDs on the right side -->
+    <g transform="translate(430, 175)">
+      <!-- Power LED -->
+      <circle cx="10" cy="10" r="5" fill="#10b981" filter="url(#glow)" />
+      <!-- Activity LED -->
+      <circle cx="25" cy="10" r="4" fill="#06b6d4" />
+      <!-- Status LED -->
+      <circle cx="40" cy="10" r="4" fill="#f59e0b" />
+    </g>
+  </g>
+
+  <!-- Kubernetes / Cilium floating brand elements (Minimalist / Abstract representations) -->
+  <g transform="translate(620, 80)" opacity="0.8">
+    <!-- Abstract Hexagon Node (Cilium-like) -->
+    <polygon points="30,0 60,17 60,52 30,70 0,52 0,17" fill="none" stroke="#14b8a6" stroke-width="2.5" />
+    <polygon points="30,10 50,22 50,47 30,60 10,47 10,22" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="4 2" />
+    <circle cx="30" cy="35" r="8" fill="#14b8a6" filter="url(#glow)" />
+  </g>
+
+  <g transform="translate(100, 70)" opacity="0.6">
+    <!-- Abstract Wheel (Kubernetes-like heptagon) -->
+    <circle cx="40" cy="40" r="25" fill="none" stroke="#06b6d4" stroke-width="2" />
+    <circle cx="40" cy="15" r="4" fill="#06b6d4" />
+    <circle cx="65" cy="40" r="4" fill="#06b6d4" />
+    <circle cx="40" cy="65" r="4" fill="#06b6d4" />
+    <circle cx="15" cy="40" r="4" fill="#06b6d4" />
+    <path d="M 40,15 L 40,65 M 15,40 L 65,40" stroke="#06b6d4" stroke-width="1" />
+  </g>
+</svg>

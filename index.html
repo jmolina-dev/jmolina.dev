@@ -5,39 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juan José Molina | Systems & DevOps Engineer</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
-    <!-- Material Symbols Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     
-    <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="js/tailwind-config.js"></script>
     
-    <!-- Local Stylesheet -->
     <link href="css/style.css" rel="stylesheet"/>
-    <!-- Local Script -->
     <script defer src="js/main.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
 
-    <!-- Header / Navbar -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-[-10]">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal-500/10 dark:bg-teal-500/5 blur-[120px] animate-blob-float-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-cyan-500/10 dark:bg-cyan-500/5 blur-[120px] animate-blob-float-2"></div>
+    </div>
+
     <header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-200/55 dark:border-slate-800/40">
         <div class="max-w-maxwidth mx-auto px-6 h-16 flex justify-between items-center">
             <a href="#hero" class="font-serif text-xl font-bold text-gradient-primary">jmolina.dev</a>
             
-            <!-- Desktop Nav Menu -->
             <nav class="hidden md:flex items-center gap-8">
-                <a href="#proyectos" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Proyectos</a>
-                <a href="#experiencia" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Experiencia</a>
                 <a href="#habilidades" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Stack Técnico</a>
+                <a href="#trayectoria" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Trayectoria</a>
+                <a href="#blog" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Blog</a>
                 <a href="#contacto" class="text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark transition-colors">Contacto</a>
-                <a href="CV_ES.pdf" download class="px-3.5 py-1.5 bg-teal-600/10 text-teal-600 dark:text-teal-400 dark:bg-teal-500/10 hover:bg-teal-600 hover:text-white dark:hover:bg-teal-500 dark:hover:text-slate-950 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">download</span> Descargar CV
+                <a href="#contacto" class="px-3.5 py-1.5 bg-teal-600/10 text-teal-600 dark:text-teal-400 dark:bg-teal-500/10 hover:bg-teal-600 hover:text-white dark:hover:bg-teal-500 dark:hover:text-slate-950 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">mail</span> Solicitar CV
                 </a>
             </nav>
 
-            <!-- Actions (Theme Toggle & Burger) -->
             <div class="flex items-center gap-4">
                 <button id="theme-toggle" class="p-2 rounded-lg text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all">
                     <span id="theme-toggle-icon" class="material-symbols-outlined text-2xl">light_mode</span>
@@ -49,7 +46,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation Menu Drawer -->
     <div id="mobile-menu" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end">
         <div class="w-3/4 max-w-sm bg-white dark:bg-slate-900 h-full p-8 shadow-2xl flex flex-col justify-between">
             <div>
@@ -60,12 +56,12 @@
                     </button>
                 </div>
                 <nav class="flex flex-col gap-6">
-                    <a href="#proyectos" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Proyectos</a>
-                    <a href="#experiencia" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Experiencia</a>
                     <a href="#habilidades" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Stack Técnico</a>
+                    <a href="#trayectoria" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Trayectoria</a>
+                    <a href="#blog" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Blog</a>
                     <a href="#contacto" class="text-lg font-bold text-slate-700 dark:text-slate-200 hover:text-primary">Contacto</a>
-                    <a href="CV_ES.pdf" download class="mt-4 px-4 py-3 bg-teal-600 text-white font-bold rounded-xl text-center text-sm shadow-md hover:bg-teal-500 transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-lg">download</span> Descargar CV
+                    <a href="#contacto" class="mt-4 px-4 py-3 bg-teal-600 text-white font-bold rounded-xl text-center text-sm shadow-md hover:bg-teal-500 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-lg">mail</span> Solicitar CV
                     </a>
                 </nav>
             </div>
@@ -82,33 +78,32 @@
 
     <main class="flex-grow pt-16">
         
-        <!-- Hero Section -->
         <section id="hero" class="py-24 max-w-maxwidth mx-auto px-6 min-h-[85vh] flex items-center">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
-                <!-- Text Column -->
-                <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
-                    <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-6 inline-block">Disponible para Consultorías</span>
+                <div class="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-6 inline-flex items-center gap-2 select-none">
+                        <span class="w-2 h-2 rounded-full bg-teal-500 pulse-active"></span>
+                        Disponible para Consultorías
+                    </span>
                     <h1 class="font-serif text-5xl md:text-6xl xl:text-7xl font-bold leading-tight tracking-tight mb-6">
                         Hola, soy <span class="text-gradient-primary">Juan José Molina</span>
                     </h1>
                     <p class="font-sans text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed max-w-xl">
-                        Especialista en <strong class="text-slate-800 dark:text-slate-200">DevOps, SRE y Administración de Sistemas Linux</strong> con más de 7 años de experiencia. Diseñador de infraestructuras escalables (IaC), migraciones seguras a la nube (Kubernetes en Azure/GCP) y automatización de pipelines CI/CD.
+                        Especialista en <strong class="text-slate-800 dark:text-slate-200">DevOps, SRE y Sistemas Linux</strong> con más de 7 años de experiencia. Compagino el diseño de infraestructuras en la nube y pipelines CI/CD con la <strong class="text-slate-800 dark:text-slate-200">mentoría y docencia técnica</strong> presencial y online para equipos e individuales.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <a href="#contacto" class="px-8 py-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-500 shadow-lg shadow-teal-500/20 dark:shadow-teal-900/30 transition-all text-center">
                             Trabajemos juntos
                         </a>
-                        <a href="#proyectos" class="px-8 py-4 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold rounded-xl hover:brightness-105 transition-all text-center">
-                            Ver mis proyectos
+                        <a href="#blog" class="px-8 py-4 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold rounded-xl hover:brightness-105 transition-all text-center">
+                            Leer mi Blog
                         </a>
                     </div>
                 </div>
-                <!-- Image Column -->
-                <div class="lg:col-span-5 flex justify-center">
+                <div class="lg:col-span-6 flex justify-center items-center w-full">
                     <div class="relative group">
-                        <!-- Glowing accent circles -->
-                        <div class="absolute -inset-1 rounded-[2.5rem] bg-gradient-to-tr from-teal-500 to-cyan-500 opacity-20 blur-xl group-hover:opacity-40 transition duration-700"></div>
-                        <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-[2rem] overflow-hidden border-2 border-slate-200 dark:border-slate-800 shadow-2xl bg-slate-100 dark:bg-slate-900">
+                        <div class="absolute -inset-1 rounded-[3.5rem] md:rounded-[4.5rem] bg-gradient-to-tr from-teal-500 to-cyan-500 opacity-20 blur-xl group-hover:opacity-40 transition duration-700"></div>
+                        <div class="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[420px] lg:h-[420px] xl:w-[460px] xl:h-[460px] rounded-[3rem] md:rounded-[4rem] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl bg-slate-100 dark:bg-slate-900">
                             <img src="img/avatar.JPEG" alt="Juan José Molina" class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-700">
                         </div>
                     </div>
@@ -116,349 +111,286 @@
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section id="proyectos" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
-            <div class="text-center mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Proyectos Destacados</h2>
-                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Selección de proyectos tecnológicos que he liderado, abarcando desde desarrollo de plataformas hasta arquitectura de sistemas.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Project 1 (Nivel0) -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-teal-500/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="h-56 bg-gradient-to-br from-teal-700 to-cyan-800 flex items-center justify-center text-white p-6 relative">
-                            <div class="absolute inset-0 bg-black/10"></div>
-                            <span class="material-symbols-outlined text-7xl opacity-90 group-hover:scale-105 transition-transform duration-300">dns</span>
-                            <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-xs uppercase tracking-wider font-semibold">LMS &amp; Academias</div>
-                        </div>
-                        <div class="p-8">
-                            <h3 class="font-serif text-2xl font-bold mb-3 group-hover:text-teal-500 transition-colors">Nivel0 Academy</h3>
-                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                                Plataforma LMS interactiva para enseñar informática desde cero. Arquitectura de microservicios robusta, simulación de hardware y contenedorización de laboratorios interactivos en tiempo real.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="p-8 pt-0 flex gap-4">
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Go</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Podman</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">HTMX</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Tailwind</span>
-                    </div>
-                </div>
-
-                <!-- Project 2 (Bare-Metal K8s Cluster) -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-teal-500/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="h-56 bg-gradient-to-br from-slate-800 to-slate-950 flex items-center justify-center text-white p-6 relative">
-                            <div class="absolute inset-0 bg-black/10"></div>
-                            <span class="material-symbols-outlined text-7xl opacity-90 group-hover:scale-105 transition-transform duration-300">terminal</span>
-                            <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-xs uppercase tracking-wider font-semibold">Infraestructura</div>
-                        </div>
-                        <div class="p-8">
-                            <h3 class="font-serif text-2xl font-bold mb-3 group-hover:text-teal-500 transition-colors">Clúster Kubernetes Bare-Metal</h3>
-                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                                Infraestructura autoalojada y optimizada para producción con AlmaLinux 10 y k0s. Enrutamiento eBPF con Cilium, hardening perimetral de firewalls, Traefik como Ingress Controller y persistencia en volumen local dinámico.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="p-8 pt-0 flex gap-4">
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">AlmaLinux</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">k0s</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">Cilium</span>
-                        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold">eBPF</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Career / Experience Timeline Section -->
-        <section id="experiencia" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-950/20">
-            <div class="text-center mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Trayectoria Profesional</h2>
-                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Una cronología detallada de mi experiencia y roles desempeñados en ingeniería de sistemas y DevOps.</p>
-            </div>
-            
-            <div class="relative max-w-3xl mx-auto flex flex-col">
-                
-                <!-- Timeline Item 1 (Senior DevOps/SRE Freelance) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="hidden md:block text-right pr-4 pt-1">
-                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">Ago 2025 - Presente</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Freelance</h4>
-                        <p class="text-sm text-slate-500">Remoto, España</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">Ago 2025 - Presente</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Consultor Senior DevOps y SRE</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Freelance</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Colaboración con equipos de ingeniería para modernizar infraestructuras heredadas y ejecutar migraciones seguras a la nube.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> <strong>Migraciones Cloud:</strong> Diseño y ejecución de transiciones a ecosistemas modernos en contenedores (Kubernetes en Azure/GCP).</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> <strong>Optimización CI/CD:</strong> Auditoría, estandarización y reconstrucción de pipelines (GitHub Actions) para reducir tiempos de build.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> <strong>IaC:</strong> Implementación de infraestructura escalable y versionada con Terraform, Terragrunt y metodologías GitOps.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 2 (Mentor/Formador Freelance) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
-                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">Oct 2025 - Presente</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Freelance</h4>
-                        <p class="text-sm text-slate-500">Remoto, España</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
-                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">Oct 2025 - Presente</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Formador y Mentor Técnico IT</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Freelance</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Mentoría técnica y formación práctica para estudiantes (FP: ASIR, SMR) y profesionales IT junior.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 md:inline-block md:text-left">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> <strong>Metodología:</strong> Diseño de laboratorios prácticos sobre administración Linux, redes, ciberseguridad y Python.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-teal-500">check_circle</span> <strong>Impacto:</strong> Orientación de estudiantes traduciendo conceptos teóricos densos en entornos de aprendizaje prácticos.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 3 (Consultor DevOps) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="hidden md:block text-right pr-4 pt-1">
-                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">Jun 2024 - Nov 2024</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Consultora Tecnológica</h4>
-                        <p class="text-sm text-slate-500">Remoto (Internacional)</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">Jun 2024 - Nov 2024</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Consultor DevOps</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Consultora Tecnológica</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Diseño e implementación de infraestructuras y pipelines para proyectos de alcance internacional.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Diseño e implementación de pipelines de CI/CD utilizando GitHub Actions.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Gestión de Infraestructura como Código (IaC) utilizando Terraform y Terragrunt.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Creación de paquetes de despliegue con Helm para aplicaciones en Azure Kubernetes Service (AKS).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 4 (Ingeniero de Sistemas) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
-                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">Ene 2024 - Jun 2024</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Smarting Engineering</h4>
-                        <p class="text-sm text-slate-500">Cornellà, España</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
-                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">Ene 2024 - Jun 2024</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Ingeniero de Sistemas</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Smarting Engineering</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Administración de sistemas locales e implementación de mejoras clave en la monitorización interna.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 md:inline-block md:text-left">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Mejora de la observabilidad de la infraestructura implementando un stack con Grafana, Loki y Prometheus.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 5 (Técnico Senior DevOps) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="hidden md:block text-right pr-4 pt-1">
-                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">Dic 2021 - Dic 2023</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Knowmad Mood</h4>
-                        <p class="text-sm text-slate-500">Madrid, España</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">Dic 2021 - Dic 2023</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Técnico Senior DevOps</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Knowmad Mood</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Desarrollo y diseño de arquitecturas en la nube basadas en contenedores a nivel corporativo.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Contribución al desarrollo de un arquetipo de infraestructura interna, migrando aplicaciones a clústeres de GKE.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Automatización de tareas de mantenimiento y despliegue con Bash, Python y Go.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 6 (Técnico Sistemas Linux) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
-                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
-                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">May 2021 - Dic 2021</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Genos Cloud Services S.L.</h4>
-                        <p class="text-sm text-slate-500">L’Hospitalet, España</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
-                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">May 2021 - Dic 2021</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Técnico de Sistemas Linux</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Genos Cloud Services S.L.</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Administración y migración hacia infraestructuras cloud, adoptando Kubernetes y metodologías ágiles.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 md:inline-block md:text-left">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Migración de servicios y aplicaciones web a Google Cloud Platform (GCP).</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Implementación de clúster Kubernetes local y posterior migración a GKE.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Dockerización de aplicaciones Java, PHP y .NET Core para Kubernetes.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Automatización de despliegues con Jenkins, GitLab CI/CD e introducción de GitOps.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Inventario previo a la migración con LibreNMS y Netbox.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 7 (Técnico Sistemas) -->
-                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16">
-                    <div class="hidden md:block text-right pr-4 pt-1">
-                        <span class="px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase">Jun 2017 - Ene 2021</span>
-                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Computer Assistance (Wiseserve)</h4>
-                        <p class="text-sm text-slate-500">Oxford, Reino Unido</p>
-                    </div>
-                    
-                    <!-- Timeline circle point -->
-                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-slate-400 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    </div>
-                    
-                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                        <span class="inline-block md:hidden px-3 py-1 bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold text-xs rounded-full uppercase mb-3">Jun 2017 - Ene 2021</span>
-                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Técnico de Sistemas</h3>
-                        <h4 class="md:hidden font-sans text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Computer Assistance (Wiseserve)</h4>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
-                            Soporte técnico integral de sistemas, virtualización y optimización de plataformas de alojamiento.
-                        </p>
-                        <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Mejora de la seguridad y rendimiento de la plataforma de alojamiento web.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Introducción del uso de Docker en el equipo de desarrollo con Jenkins.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Virtualización y migración P2V con VMware ESXi y copias de seguridad robustas.</li>
-                            <li class="flex gap-2"><span class="material-symbols-outlined text-xs text-slate-400">check_circle</span> Resolución de problemas (troubleshooting) en sistemas Linux internos.</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Tech Stack Grid Section -->
         <section id="habilidades" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
             <div class="text-center mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Habilidades &amp; Stack Técnico</h2>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Habilidades y stack técnico</h2>
                 <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Tecnologías y herramientas que domino en el día a día para diseñar y construir software robusto.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card Category 1 -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="material-symbols-outlined text-teal-500 text-3xl">dns</span>
-                        <h3 class="font-serif text-xl font-bold">DevOps &amp; Infra</h3>
+                <div class="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 p-8 rounded-2xl glow-card flex flex-col justify-between transition-all duration-300">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500">
+                                <span class="material-symbols-outlined text-3xl">cloud</span>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-200">Automatización e IaC</h3>
+                                <p class="text-xs text-slate-400">Infraestructura declarativa</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            Provisión inmutable de recursos multi-región y ciclo de vida de infraestructura codificada. Diseños modulares reutilizables para evitar duplicidad y garantizar reproducibilidad absoluta.
+                        </p>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Kubernetes (k0s, AKS, GKE)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Cilium (eBPF)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Docker &amp; Podman</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Terraform &amp; Terragrunt</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Linux (Debian, CentOS)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Terraform &amp; Terragrunt</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">GitOps</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">GitHub Actions</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Jenkins</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Helm &amp; Kustomize</span>
+                    </div>
                 </div>
 
-                <!-- Card Category 2 -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="material-symbols-outlined text-teal-500 text-3xl">code</span>
-                        <h3 class="font-serif text-xl font-bold">Desarrollo Backend</h3>
+                <div class="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 p-8 rounded-2xl glow-card flex flex-col justify-between transition-all duration-300">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500">
+                                <span class="material-symbols-outlined text-3xl">dns</span>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-200">Orquestación y redes</h3>
+                                <p class="text-xs text-slate-400">Kernel y container engine</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            Gestión de clústeres Kubernetes bare-metal e híbridos. Configuración avanzada de políticas de red de mínimo privilegio y enrutamiento directo con Cilium eBPF a nivel de socket.
+                        </p>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Go (Golang)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Python</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">PostgreSQL</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Redis</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">APIs REST / gRPC</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Kubernetes (k0s/GKE)</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Cilium eBPF</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Docker &amp; Podman</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Linux (AlmaLinux/Debian)</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Ingress (Nginx/Traefik)</span>
+                    </div>
                 </div>
 
-                <!-- Card Category 3 -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="material-symbols-outlined text-teal-500 text-3xl">terminal</span>
-                        <h3 class="font-serif text-xl font-bold">Herramientas &amp; QA</h3>
+                <div class="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 p-8 rounded-2xl glow-card flex flex-col justify-between transition-all duration-300">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500">
+                                <span class="material-symbols-outlined text-3xl">terminal</span>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-200">Sistemas y observabilidad</h3>
+                                <p class="text-xs text-slate-400">Desarrollo y telemetría</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            Desarrollo backend altamente concurrente y optimizado. Diseño de stacks de monitorización centralizados LGPM correlacionando trazas de logs y métricas clave para reducir el MTTD.
+                        </p>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">GitHub Actions / Jenkins</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Git &amp; GitOps</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Observabilidad (Grafana, Loki)</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Nginx &amp; Traefik</span> <span class="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase">Avanzado</span></li>
-                        <li class="flex justify-between items-center text-sm"><span class="font-semibold">Virtualización (VMware)</span> <span class="text-slate-500 text-xs font-bold uppercase">Intermedio</span></li>
-                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Go (Golang)</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Python</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Grafana &amp; Prometheus</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">Loki &amp; Promtail</span>
+                        <span class="px-3 py-1 bg-slate-100/80 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-slate-200/50 dark:border-slate-700/30 hover:border-teal-500/50 dark:hover:border-teal-500/30 hover:bg-teal-500/5 dark:hover:bg-teal-500/5 transition-all duration-300 cursor-default">PostgreSQL &amp; Redis</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Education & Languages sub-section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 pt-12 border-t border-slate-200/50 dark:border-slate-800/50">
-                <!-- Education Card -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex gap-4 items-start">
-                    <span class="material-symbols-outlined text-teal-500 text-3xl mt-1">school</span>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 pt-12 border-t border-slate-200/50 dark:border-slate-800/50">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex gap-4 items-start hover:border-teal-500/30 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500 shrink-0">
+                        <span class="material-symbols-outlined text-2xl">co_present</span>
+                    </div>
                     <div>
-                        <h4 class="font-serif text-lg font-bold mb-2">Educación</h4>
-                        <p class="font-semibold text-sm text-slate-800 dark:text-slate-200">Técnico en Sistemas Microinformáticos y Redes</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">IES Francisco de Goya, Murcia (2017)</p>
+                        <h4 class="font-serif text-lg font-bold mb-2">Docencia y mentoría IT</h4>
+                        <p class="text-[11px] text-teal-600 dark:text-teal-400 font-semibold uppercase tracking-wider mb-2">Clases particulares online</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Mentorías 1-a-1 y clases particulares online enfocadas en acelerar la adopción de Linux, DevOps y Kubernetes. Explicaciones conceptuales con aplicaciones prácticas.
+                        </p>
                     </div>
                 </div>
-                <!-- Languages Card -->
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex gap-4 items-start">
-                    <span class="material-symbols-outlined text-teal-500 text-3xl mt-1">translate</span>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex gap-4 items-start hover:border-teal-500/30 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500 shrink-0">
+                        <span class="material-symbols-outlined text-2xl">school</span>
+                    </div>
+                    <div>
+                        <h4 class="font-serif text-lg font-bold mb-2">Educación</h4>
+                        <p class="text-[11px] text-teal-600 dark:text-teal-400 font-semibold uppercase tracking-wider mb-2">Sistemas y redes (2017)</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Técnico en Sistemas Microinformáticos y Redes por el IES Francisco de Goya. Sólida base práctica en administración de sistemas locales y despliegue de redes.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex gap-4 items-start hover:border-teal-500/30 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 dark:bg-teal-500/5 flex items-center justify-center text-teal-500 shrink-0">
+                        <span class="material-symbols-outlined text-2xl">translate</span>
+                    </div>
                     <div>
                         <h4 class="font-serif text-lg font-bold mb-2">Idiomas</h4>
-                        <ul class="space-y-1 text-sm text-slate-700 dark:text-slate-300">
-                            <li><strong class="font-semibold">Español:</strong> Nativo</li>
-                            <li><strong class="font-semibold">Inglés:</strong> Competencia Profesional Completa (Nivel C1)</li>
-                        </ul>
+                        <p class="text-[11px] text-teal-600 dark:text-teal-400 font-semibold uppercase tracking-wider mb-2">Competencia C1 / nativo</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Español nativo e inglés con nivel C1 certificado. Experiencia impartiendo formación técnica y colaborando activamente en inglés con equipos internacionales.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <section id="trayectoria" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-950/20">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-4 inline-block">Mi Evolución</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Trayectoria y evolución profesional</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Un viaje de crecimiento técnico continuo: desde la administración de servidores físicos locales hasta el diseño de arquitecturas cloud modernas y la mentoría IT.</p>
+            </div>
+            <div class="relative max-w-3xl mx-auto flex flex-col">
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="md:col-start-1 hidden md:block text-right pr-4 pt-1">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">2017 - 2021</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Los Inicios</h4>
+                        <p class="text-sm text-slate-500">Oxford, Reino Unido</p>
+                    </div>
+                    
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="md:col-start-2 timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">2017 - 2021</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Junior SysAdmin</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Oxford, Reino Unido</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                            Mis primeros pasos se centraron en dominar los cimientos de la infraestructura clásica: administración de servidores Linux y entornos complejos de virtualización sobre hipervisores ESXi. Más allá de resolver incidencias del día a día, fue en esta etapa donde comencé a automatizar tareas rutinarias e introducir contenedores en entornos locales, transformando el mantenimiento manual en flujos repetibles.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">2021</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Transición cloud</h4>
+                        <p class="text-sm text-slate-500">Barcelona</p>
+                    </div>
+                    
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">2021</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Linux &amp; Cloud Engineer</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Barcelona</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                            Dejé atrás la dependencia del hardware físico para centrarme por completo en entornos Cloud y el paradigma nativo de la nube. Me especialicé en descomponer monolitos tradicionales y migrar infraestructuras locales críticas hacia Google Cloud Platform (GCP), adoptando por primera vez Kubernetes (GKE) como el estándar para orquestar microservicios en producción.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="md:col-start-1 hidden md:block text-right pr-4 pt-1">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">2021 - 2024</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Consolidación</h4>
+                        <p class="text-sm text-slate-500">Madrid / Remoto</p>
+                    </div>
+                    
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="md:col-start-2 timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">2021 - 2024</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Ingeniero DevOps &amp; SRE</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Madrid / Remoto</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                            En esta etapa me consolidé como DevOps y SRE Senior, asumiendo la responsabilidad de diseñar arquitecturas multinube críticas y de alta disponibilidad. Llevé a cabo la automatización integral de la infraestructura mediante Terraform y Terragrunt, programando además herramientas CLI personalizadas en Go y Python para optimizar la eficiencia operativa del equipo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-16">
+                    <div class="md:col-start-2 pl-4 pt-1 order-last hidden md:block">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">2025 - Presente</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Consultoría y formación</h4>
+                        <p class="text-sm text-slate-500">Remoto</p>
+                    </div>
+                    
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-teal-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="timeline-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow md:text-right md:col-start-1">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">2025 - Presente</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-1">Consultor IT y formador</h3>
+                        <h4 class="md:hidden font-sans text-sm font-semibold text-teal-600 dark:text-teal-400 mb-3">Remoto</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                            Compagino mi actividad como consultor de infraestructuras complejas con mi vocación por la formación técnica. Asesoro a empresas en el diseño de flujos GitOps automatizados y robustecimiento de seguridad en clústeres Kubernetes, mientras dicto mentorías personalizadas de Linux, redes y DevOps, diseñando laboratorios prácticos e interactivos para acelerar el aprendizaje.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item relative pl-10 md:pl-0 md:grid md:grid-cols-2 md:gap-16">
+                    <div class="md:col-start-1 hidden md:block text-right pr-4 pt-1">
+                        <span class="px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase">El Siguiente Paso</span>
+                        <h4 class="font-serif text-xl font-bold mt-3 text-slate-800 dark:text-slate-200">Nuevos Retos</h4>
+                        <p class="text-sm text-slate-500">Proyectos a medida</p>
+                    </div>
+                    
+                    <div class="absolute left-3 md:left-1/2 md:-ml-3.5 top-1 w-7 h-7 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-500 border-4 border-slate-50 dark:border-slate-950 z-10 flex items-center justify-center pulse-active">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    </div>
+                    
+                    <div class="md:col-start-2 timeline-card bg-gradient-to-tr from-teal-500/5 to-cyan-500/5 dark:from-teal-500/10 dark:to-cyan-500/10 border border-teal-500/30 dark:border-teal-500/25 p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <span class="inline-block md:hidden px-3 py-1 bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold text-xs rounded-full uppercase mb-3">El Siguiente Paso</span>
+                        <h3 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">¿Colaboramos en tu próximo proyecto?</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+                            Estoy abierto a nuevos desafíos de arquitectura de sistemas, consultoría estratégica de automatización o el desarrollo de programas de mentoría a medida para capacitar a tu equipo técnico. ¡Escríbeme!
+                        </p>
+                        <a href="#contacto" class="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-600 dark:bg-teal-500 text-white dark:text-slate-950 font-bold text-xs rounded-xl hover:brightness-105 transition-all shadow-md">
+                            <span class="material-symbols-outlined text-sm">send</span> Iniciar Conversación
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="blog" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold text-xs uppercase tracking-wider mb-4 inline-block">Publicaciones</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Blog y artículos técnicos</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Guías detalladas, notas de arquitectura y tutoriales prácticos sobre infraestructura, automatización y redes.</p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <a href="blog/k0s-baremetal.html" class="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl overflow-hidden glow-card flex flex-col justify-between group transition-all duration-300 hover:scale-[1.01] hover:border-teal-500/40">
+                    <div>
+                        <div class="h-52 relative overflow-hidden">
+                            <img src="img/k8s_baremetal.svg" alt="Bare-metal Kubernetes cluster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-4 left-4 bg-teal-500/95 text-slate-950 px-3 py-1 rounded-md text-xs uppercase tracking-wider font-bold">Sistemas y DevOps</div>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                                <span class="material-symbols-outlined text-sm">schedule</span>
+                                <span>15 min de lectura</span>
+                                <span>•</span>
+                                <span>18 Jun 2026</span>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold mb-3 text-slate-800 dark:text-slate-100 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+                                Clúster Kubernetes Bare-Metal: AlmaLinux 10, k0s y Cilium (Single-Node)
+                            </h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                                Guía completa para desplegar un nodo único de producción en un servidor físico. Hardening perimetral, configuración declarativa, enrutamiento eBPF con Cilium y entrada de tráfico con Traefik.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0 flex justify-between items-center border-t border-slate-200/30 dark:border-slate-800/20 mt-auto">
+                        <div class="flex gap-2">
+                            <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-[10px] font-semibold">k0s</span>
+                            <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-[10px] font-semibold">Cilium</span>
+                            <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-[10px] font-semibold">AlmaLinux</span>
+                        </div>
+                        <span class="text-xs font-semibold text-teal-600 dark:text-teal-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                            Leer artículo <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
         <section id="contacto" class="py-24 max-w-maxwidth mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <div>
@@ -469,12 +401,8 @@
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-teal-500">mail</span>
-                            <a href="mailto:contacto@jmolina.dev" class="text-slate-700 dark:text-slate-300 hover:text-teal-500 transition-colors">contacto@jmolina.dev</a>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-teal-500">phone</span>
-                            <a href="tel:+34684174552" class="text-slate-700 dark:text-slate-300 hover:text-teal-500 transition-colors">+34 684 174 552</a>
+                            <span class="material-symbols-outlined text-teal-500">forum</span>
+                            <span class="text-slate-700 dark:text-slate-300">Usa el formulario de la derecha para iniciar una conversación.</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-teal-500">pin_drop</span>
@@ -484,21 +412,22 @@
                 </div>
                 
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm">
-                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('¡Mensaje enviado (simulación)!');">
+                    <form class="space-y-6" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="f1104e43-9fe4-4ba9-afee-6e7ce58edc8f">
                         <div>
                             <label for="name" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Nombre</label>
-                            <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
+                            <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Correo Electrónico</label>
-                            <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all">
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Mensaje</label>
-                            <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all"></textarea>
+                            <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all"></textarea>
                         </div>
                         <button type="submit" class="w-full py-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-500 transition-all shadow-lg shadow-teal-500/20">
-                            Enviar Mensaje
+                            Enviar mensaje
                         </button>
                     </form>
                 </div>
@@ -507,14 +436,12 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-12">
         <div class="max-w-maxwidth mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <p class="text-sm text-slate-500">&copy; 2026 Juan José Molina. Todos los derechos reservados.</p>
             <div class="flex gap-6 text-sm">
                 <a href="https://github.com/jmolina-dev" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-teal-500 transition-colors">GitHub</a>
                 <a href="https://www.linkedin.com/in/jmolinaperez" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-teal-500 transition-colors">LinkedIn</a>
-                <a href="https://nivel0.net" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-teal-500 transition-colors font-semibold">nivel0.net</a>
             </div>
         </div>
     </footer>
