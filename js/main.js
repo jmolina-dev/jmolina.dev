@@ -118,10 +118,10 @@ Especializado en infraestructuras altamente disponibles, pipelines CI/CD robusto
   - <strong class="text-cyan-400">Sistemas:</strong> Linux (Debian/CentOS), eBPF, Clouds (Azure/GCP)`,
         
         experience: () => `Mi Trayectoria Profesional:<br>
-  - <strong class="text-cyan-400">2017-2021:</strong> Junior SysAdmin (Virtualización & Linux en Oxford, UK)<br>
-  - <strong class="text-cyan-400">2021:</strong> Linux SysAdmin (Migración Cloud & Kubernetes en Barcelona)<br>
+  - <strong class="text-cyan-400">2025-Pres:</strong> Consultor DevOps/SRE & Trainer Freelance (Remoto)<br>
   - <strong class="text-cyan-400">2021-2024:</strong> Senior DevOps & SRE (IaC modular, Terraform & Telemetría)<br>
-  - <strong class="text-cyan-400">2025-Pres:</strong> Consultor DevOps/SRE & Formador Freelance (Remoto)`,
+  - <strong class="text-cyan-400">2021:</strong> Linux SysAdmin (Migración Cloud & Kubernetes en Barcelona)<br>
+  - <strong class="text-cyan-400">2017-2021:</strong> Junior SysAdmin (Virtualización & Linux en Oxford, UK)`,
         
         contact: () => `Contacto:<br>
   - <strong class="text-cyan-400">Web:</strong> Usa el formulario de contacto en la web<br>
