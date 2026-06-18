@@ -35,17 +35,13 @@ jobs:
 
       - name: Optimize Assets and Compile CSS
         run: |
-          # 1. Create a temporary input file with Tailwind directives prepended to style.css
           printf "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n" > input.css
           cat css/style.css >> input.css
           
-          # 2. Run Tailwind CLI (v3) to compile classes in index.html/js using the root tailwind.config.js
           npx tailwindcss@3 -i input.css -o css/style.css --minify
           
-          # 3. Clean up the temporary input file
           rm input.css
           
-          # 4. Remove development Tailwind Play CDN scripts from index.html for production performance
           sed -i '/cdn.tailwindcss.com/d' index.html
           sed -i '/js\/tailwind-config.js/d' index.html
 
