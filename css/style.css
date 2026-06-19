@@ -122,22 +122,3 @@ body {
 .pulse-active {
     animation: pulse-teal 2s infinite;
 }
-
-/* Terminal Styles */
-.terminal-window {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    font-family: 'Fira Code', 'Courier New', Courier, monospace;
-}
-.terminal-cursor {
-    display: inline-block;
-    width: 8px;
-    height: 15px;
-    background-color: #14b8a6;
-    animation: blink 1s step-end infinite;
-    vertical-align: middle;
-}
-@keyframes blink {
-    from, to { background-color: transparent }
-    50% { background-color: #14b8a6 }
-}
-

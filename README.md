@@ -16,11 +16,13 @@ Para levantar el proyecto de forma local y evitar problemas de CORS o rutas rela
 python3 -m http.server 8000
 ```
 
-Para regenerar y minificar el CSS compilado ejecutando:
+Para compilar y minificar localmente el CSS con todas las clases de Tailwind (nota que esto combinará las directivas de Tailwind y tus estilos en `css/style.css` generando un archivo minificado para producción; asegúrate de guardar tus cambios en Git antes de ejecutarlo):
 
 ```bash
-npx tailwindcss@3 -i css/style.css -o css/style.css --minify
+printf "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n" > temp.css && cat css/style.css >> temp.css && npx tailwindcss@3 -i temp.css -o css/style.css --minify && rm temp.css
 ```
+
+Nota: Durante el desarrollo local no es necesario compilar el CSS, ya que `index.html` carga Tailwind dinámicamente mediante CDN. El pipeline de CI/CD realiza esta compilación automáticamente al desplegar.
 
 ## Despliegue (CI/CD)
 
