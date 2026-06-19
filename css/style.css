@@ -122,3 +122,38 @@ body {
 .pulse-active {
     animation: pulse-teal 2s infinite;
 }
+
+/* Fallback/critical CSS rules for hero-avatar-container to guarantee square sizing */
+#hero-avatar-container {
+    width: 256px !important;
+    height: 256px !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+@media (min-width: 640px) {
+    #hero-avatar-container {
+        width: 288px !important;
+        height: 288px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    #hero-avatar-container {
+        width: 320px !important;
+        height: 320px !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #hero-avatar-container {
+        width: 360px !important;
+        height: 360px !important;
+    }
+}
+
+@media (min-width: 1280px) {
+    #hero-avatar-container {
+        width: 400px !important;
+        height: 400px !important;
+    }
+}
