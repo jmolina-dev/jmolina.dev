@@ -140,6 +140,25 @@
                     Esta guía documenta el despliegue directo de un clúster Kubernetes de un solo nodo para producción en un servidor bare-metal. El stack técnico utiliza AlmaLinux 10, k0s, Cilium eBPF y Traefik, priorizando la eficiencia de recursos y el aislamiento de seguridad.
                 </p>
 
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    ¿Por qué tiene sentido este setup en Bare-Metal?
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    A diferencia de los entornos cloud administrados (como EKS, GKE o AKS), desplegar en un servidor dedicado (Hetzner, OVH, etc.) elimina el sobrecoste de facturación por recursos virtualizados, balanceadores de carga físicos y cargos por transferencia de datos. Por una fracción del coste, tienes acceso al 100% del rendimiento del hardware real (CPU, RAM de baja latencia y discos NVMe locales).
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Sin embargo, operar sin un proveedor cloud significa que no contamos con automatizaciones a nivel de hipervisor: nosotros somos responsables de la seguridad perimetral, la persistencia, el enrutamiento de red y la negociación de certificados.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Para resolver esto de forma eficiente y segura, implementamos este diseño tecnológico integrado:
+                </p>
+                <ul class="list-disc pl-5 space-y-3 text-slate-600 dark:text-slate-400 text-sm mb-8">
+                    <li><strong>k0s:</strong> Un motor de Kubernetes empaquetado en un único binario sin dependencias externas, reduciendo el consumo de memoria del plano de control en reposo.</li>
+                    <li><strong>Cilium CNI (eBPF sin Kube-Proxy):</strong> Sustituimos las ineficientes y masivas tablas de traducción de red de Linux (iptables) de kube-proxy por programas eBPF ejecutados directamente en el kernel de Linux. Esto optimiza el procesamiento de paquetes, reduce el uso de CPU a cero y permite una observabilidad extrema del tráfico.</li>
+                    <li><strong>Traefik en hostNetwork (Hardened):</strong> En bare-metal no hay un "LoadBalancer virtual". Enlazar el Ingress Controller directamente a la red física (<code>hostNetwork: true</code>) ofrece el máximo rendimiento de red libre de traducciones complejas de eBPF. Para asegurar este punto de entrada expuesto, lo forzamos a ejecutarse sin privilegios de root (non-root) en puertos no privilegiados, y delegamos la escucha estándar del puerto 80/443 a reglas a nivel del firewall del host.</li>
+                    <li><strong>Hardening perimetral con Cloudflare IPs:</strong> Blindamos el puerto web físico del servidor dedicándole una zona de cortafuegos que bloquea cualquier petición HTTP/HTTPS que no provenga de los servidores oficiales de Cloudflare. Cualquier atacante externo que escanee o intente atacar nuestra IP física encontrará los puertos cerrados, forzando a que todo el tráfico legítimo sea filtrado, inspeccionado por el WAF y mitigado contra ataques DDoS por el borde perimetral de Cloudflare de forma gratuita.</li>
+                </ul>
+
                 <div class="bg-amber-500/10 border-l-4 border-amber-500 p-6 rounded-r-xl my-8">
                     <div class="flex gap-4">
                         <span class="material-symbols-outlined text-amber-500 text-3xl select-none">warning</span>
@@ -151,17 +170,63 @@
                             <ul class="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-400 text-sm">
                                 <li><strong>Roles:</strong> El manifiesto de infraestructura (k0sctl.yaml) debe separar las máquinas físicas asignando roles de <em>controller</em> (plano de control ciego) y <em>worker</em> (nodos de ejecución).</li>
                                 <li><strong>Red de Pods:</strong> Cilium necesitará establecer túneles (Geneve/VXLAN) o habilitar el enrutamiento nativo con BGP para que los pods de diferentes nodos físicos puedan verse entre sí.</li>
-                                <li><strong>Entrada de Tráfico:</strong> No puedes usar hostPort en Traefik si tienes varios nodos. Deberás configurar un anuncio L2 o BGP (nativamente con Cilium o añadiendo MetalLB) para aprovisionar IPs externas a servicios de tipo LoadBalancer.</li>
+                                <li><strong>Entrada de Tráfico:</strong> No puedes usar hostPort ni hostNetwork en Traefik sin consideraciones complejas si tienes varios nodos. Deberás configurar un anuncio L2 o BGP (nativamente con Cilium o añadiendo MetalLB) para aprovisionar IPs externas a servicios de tipo LoadBalancer.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
-                    1. Seguridad perimetral y hardening
+                    1. Seguridad perimetral, Sysctl y CNI (hardening)
                 </h2>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                    En un clúster de un solo nodo sin un firewall físico dedicado, la seguridad recae en el kernel de Linux. AlmaLinux 10 utiliza nftables. Implementa firewalld para establecer las reglas de acceso.
+                    En un clúster de un solo nodo sin un firewall físico dedicado, la seguridad recae en el kernel de Linux. AlmaLinux 10 utiliza nftables. Implementaremos firewalld para definir las reglas de acceso iniciales y habilitaremos la configuración Sysctl necesaria para el correcto enrutamiento eBPF de Cilium.
+                </p>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso A: Configuración de Parámetros de Kernel (Sysctl)
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Para que Cilium gestione el tráfico sin kube-proxy, el kernel debe permitir el reenvío de paquetes IPv4 y configurar el filtro de ruta inversa en modo laxo (rp_filter = 2) para permitir que eBPF maneje paquetes de forma asimétrica sin que el kernel los descarte. Crea el archivo <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">/etc/sysctl.d/99-kubernetes.conf</code>:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-slate-500"># Habilitar reenvío de paquetes IPv4 (Requisito para CNI/Pods)</span>
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+
+<span class="text-slate-500"># Configuración de rp_filter (Cilium requiere modo Loose para enrutamiento eBPF)</span>
+net.ipv4.conf.all.rp_filter = 2
+net.ipv4.conf.default.rp_filter = 2</code></pre>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Aplica la nueva configuración de inmediato:
+                </p>
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">sudo sysctl --system</code></pre>
+                </div>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso B: Resolver el conflicto "no route to host" entre CNI y Firewalld
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Por defecto, Cilium gestiona su propio rango CIDR interno para Pods y Servicios. Si <code>firewalld</code> está activo con su configuración por defecto, bloqueará el tráfico interno del clúster que viaja al API Server (habitualmente puerto 6443 o IP virtual 10.96.0.1), lanzando el clásico error de los pods de sistema: <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">dial tcp 10.96.0.1:443: connect: no route to host</code>.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Para solucionarlo de forma segura sin deshabilitar el firewall del host ni habilitar rangos gigantescos (/8) que expongan tu servidor a otros clientes del centro de datos, confiamos estrictamente en las interfaces de Cilium y en la subred de pods real:
                 </p>
 
                 <div class="relative group my-6">
@@ -175,13 +240,24 @@
 sudo dnf install firewalld
 sudo systemctl enable --now firewalld
 
-<span class="text-slate-500"># Exponer estrictamente HTTP, HTTPS y SSH</span>
-sudo firewall-cmd --zone=public --add-service=http --permanent
-sudo firewall-cmd --zone=public --add-service=https --permanent
+<span class="text-slate-500"># Exponer estrictamente SSH</span>
 sudo firewall-cmd --zone=public --add-service=ssh --permanent
 
 <span class="text-slate-500"># Bloquear el acceso público al API de Kubernetes (6443)</span>
 sudo firewall-cmd --zone=public --remove-port=6443/tcp --permanent
+
+<span class="text-slate-500"># Opción A (Recomendado): Confiar en las interfaces de red de Cilium</span>
+sudo firewall-cmd --zone=trusted --add-interface=cilium_host --permanent
+sudo firewall-cmd --zone=trusted --add-interface=cilium_net --permanent
+sudo firewall-cmd --zone=trusted --add-interface=lxc+ --permanent
+
+<span class="text-slate-500"># Opción B (Alternativa): Confiar en los CIDRs reales de Pods (10.244.0.0/16) y Services (10.96.0.0/12)</span>
+sudo firewall-cmd --zone=trusted --add-source=10.244.0.0/16 --permanent
+sudo firewall-cmd --zone=trusted --add-source=10.96.0.0/12 --permanent
+
+<span class="text-slate-500"># Permitir a la subred de Pods el acceso al puerto del API Server en la máquina física</span>
+sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="10.244.0.0/16" port port="6443" protocol="tcp" accept' --permanent
+
 sudo firewall-cmd --reload</code></pre>
                 </div>
 
@@ -219,7 +295,7 @@ sudo dnf install fail2ban -y</code></pre>
                     Define la infraestructura como código (IaC) para evitar la configuración manual por SSH. Usaremos k0sctl para inyectar k0s.
                 </p>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                    Para que Cilium gestione todo el enrutamiento eBPF, desactiva explícitamente kube-proxy y el proveedor de red por defecto en la configuración.
+                    Para que Cilium funcione de manera óptima sin interferencias de iptables clásicas, deshabilitaremos por completo kube-proxy y el proveedor de red por defecto de k0s.
                 </p>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
                     Crea el archivo <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">k0sctl.yaml</code> en tu máquina local:
@@ -273,7 +349,7 @@ sudo dnf install fail2ban -y</code></pre>
                     3. Red eBPF: inyección de Cilium
                 </h2>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                    El clúster está desplegado pero sin red (estado <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">NotReady</code>). Inyecta Cilium desde tu máquina local usando su CLI oficial.
+                    El clúster está inicializado pero sin red (estado <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">NotReady</code>). Inyecta Cilium desde tu máquina local usando su CLI oficial.
                 </p>
 
                 <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
@@ -351,13 +427,39 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
                 </div>
 
                 <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
-                    5. Ingress controller: Traefik
+                    5. Ingress controller: Traefik (hostNetwork y Hardening)
                 </h2>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                    Para gestionar el tráfico entrante HTTP/gRPC y los certificados SSL automáticamente, utiliza Traefik. En una topología Single-Node, los puertos del Ingress se mapean directamente a los puertos físicos del servidor (hostPort).
+                    Para gestionar la entrada de tráfico HTTP/HTTPS y los certificados SSL automáticos, utilizaremos Traefik. En bare-metal, la solución más robusta y de mayor rendimiento es enlazar el Ingress Controller directamente a la red física usando <strong>`hostNetwork: true`</strong>, evitando el overhead y la inestabilidad de la traducción de puertos de eBPF (`hostPort` o `NodePort`).
                 </p>
                 <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                    Crea <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">traefik-values.yaml</code>:
+                    Sin embargo, implementar `hostNetwork: true` requiere solucionar dos consideraciones de seguridad y arquitectura críticas:
+                </p>
+                <ul class="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-400 text-sm mb-6">
+                    <li><strong>Resolución DNS Interna:</strong> Un pod en `hostNetwork` utiliza por defecto el `/etc/resolv.conf` del sistema host, perdiendo la capacidad de resolver nombres internos de Kubernetes (`.svc.cluster.local`). Para evitar que Traefik pierda la conectividad con tus microservicios, configuramos explícitamente la política DNS en <strong>`ClusterFirstWithHostNet`</strong>.</li>
+                    <li><strong>Aislamiento No Privilegiado (Non-Root):</strong> Levantar Traefik como root (`runAsUser: 0`) para poder escuchar en los puertos privilegiados 80/443 de la red del host es un riesgo grave. En su lugar, obligamos al contenedor a ejecutarse de forma segura sin privilegios de root, escuchando en puertos no privilegiados (8000 y 8443), y aplicamos una redirección interna en el firewall del host (`80 -> 8000` y `443 -> 8443`).</li>
+                </ul>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Aplica la redirección en el firewall del host:
+                </p>
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono">sudo firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8000 --permanent
+sudo firewall-cmd --zone=public --add-forward-port=port=443:proto=tcp:toport=8443 --permanent
+sudo firewall-cmd --reload</code></pre>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Por otra parte, si el dominio del servidor está detrás del proxy de **Cloudflare** (nube naranja activa), el reto SSL por defecto de Let's Encrypt (`tlschallenge` / TLS-ALPN-01) fallará debido a la interceptación SSL del borde. Debemos configurar el resolvedor para utilizar el reto por HTTP en el puerto 80 (puerto 8000 en el contenedor) configurando <strong>`httpchallenge`</strong>.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Crea el archivo <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1.5 py-0.5 rounded font-mono text-sm font-semibold">traefik-values.yaml</code> con este diseño robusto y seguro:
                 </p>
 
                 <div class="relative group my-6">
@@ -367,7 +469,17 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
                             <span>Copiar</span>
                         </button>
                     </div>
-                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-teal-400">service</span>:
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-teal-400">deployment</span>:
+  <span class="text-teal-400">hostNetwork</span>: true
+  <span class="text-teal-400">dnsPolicy</span>: ClusterFirstWithHostNet
+  <span class="text-teal-400">securityContext</span>:
+    <span class="text-teal-400">runAsNonRoot</span>: true
+    <span class="text-teal-400">runAsUser</span>: 65532
+    <span class="text-teal-400">runAsGroup</span>: 65532
+    <span class="text-teal-400">allowPrivilegeEscalation</span>: false
+    <span class="text-teal-400">readOnlyRootFilesystem</span>: true
+
+<span class="text-teal-400">service</span>:
   <span class="text-teal-400">type</span>: ClusterIP
   <span class="text-teal-400">ports</span>:
     <span class="text-teal-400">web</span>:
@@ -375,20 +487,21 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
       <span class="text-teal-400">expose</span>:
         <span class="text-teal-400">default</span>: true
       <span class="text-teal-400">exposedPort</span>: 80
-      <span class="text-teal-400">hostPort</span>: 80
     <span class="text-teal-400">websecure</span>:
       <span class="text-teal-400">port</span>: 8443
       <span class="text-teal-400">expose</span>:
         <span class="text-teal-400">default</span>: true
       <span class="text-teal-400">exposedPort</span>: 443
-      <span class="text-teal-400">hostPort</span>: 443
+
 <span class="text-teal-400">persistence</span>:
   <span class="text-teal-400">enabled</span>: true
   <span class="text-teal-400">storageClass</span>: "local-path"
   <span class="text-teal-400">path</span>: "/data"
   <span class="text-teal-400">size</span>: 128Mi
+
 <span class="text-teal-400">additionalArguments</span>:
-  - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+  - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+  - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
   - "--certificatesresolvers.letsencrypt.acme.email=admin@tudominio.com"
   - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"</code></pre>
                 </div>
@@ -409,8 +522,126 @@ helm repo update
 helm upgrade --install traefik traefik/traefik -n kube-system -f traefik-values.yaml</code></pre>
                 </div>
 
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    6. Integración perimetral con Cloudflare
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Una vez expuestos los puertos web, el siguiente paso crítico en producción es evitar que un escáner de red directo localice nuestra IP pública y ejecute ataques directamente sobre el clúster. Para ello, restringimos el acceso en los puertos 80/443 de forma que <strong>solo acepten tráfico proveniente de las IPs oficiales de Cloudflare</strong>.
+                </p>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso A: Configurar el filtro de IPs oficiales de Cloudflare en Firewalld
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Crearemos una zona de firewalld dedicada exclusivamente a Cloudflare, agregaremos sus rangos CIDR públicos dinámicamente y eliminaremos el acceso libre general a HTTP/HTTPS de la zona pública.
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-slate-500"># 1. Crear una zona en firewalld exclusiva para Cloudflare</span>
+sudo firewall-cmd --new-zone=cloudflare --permanent
+sudo firewall-cmd --reload
+
+<span class="text-slate-500"># 2. Agregar los rangos IPv4 oficiales de Cloudflare a la zona</span>
+for ip in $(curl -s https://www.cloudflare.com/ips-v4); do
+  sudo firewall-cmd --zone=cloudflare --add-source="$ip" --permanent
+done
+
+<span class="text-slate-500"># 3. Habilitar la redirección interna de puertos (80->8000, 443->8443) en la nueva zona</span>
+sudo firewall-cmd --zone=cloudflare --add-forward-port=port=80:proto=tcp:toport=8000 --permanent
+sudo firewall-cmd --zone=cloudflare --add-forward-port=port=443:proto=tcp:toport=8443 --permanent
+
+<span class="text-slate-500"># 4. Remover HTTP y HTTPS generales de la zona pública general</span>
+sudo firewall-cmd --zone=public --remove-service=http --permanent
+sudo firewall-cmd --zone=public --remove-service=https --permanent
+sudo firewall-cmd --zone=public --remove-port=80/tcp --permanent
+sudo firewall-cmd --zone=public --remove-port=443/tcp --permanent
+
+sudo firewall-cmd --reload</code></pre>
+                </div>
+
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-4">
+                    Paso B: Evitar errores de TLS en subdominios anidados (segundo nivel)
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Si tu servicio utiliza subdominios anidados como <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">preprod.app.tudominio.com</code>, te encontrarás con el error <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm text-rose-600 dark:text-rose-400">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</code>.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Esto ocurre porque el SSL Universal gratuito de Cloudflare solo cubre el dominio raíz (<code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">tudominio.com</code>) y un único nivel comodín (<code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm">*.tudominio.com</code>). Para solucionarlo de manera gratuita, debemos <strong>aplanar los subdominios</strong> a un solo nivel utilizando guiones de separación en lugar de puntos adicionales:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl">
+                        <span class="text-xs font-bold text-rose-500 uppercase tracking-wider block mb-1">Estructura Inválida</span>
+                        <span class="font-mono text-slate-800 dark:text-slate-200 font-bold block">preprod.app.tudominio.com</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 mt-1 block">Requiere un plan de Cloudflare de pago (Advanced Certificate Manager) para el segundo nivel.</span>
+                    </div>
+                    <div class="p-4 bg-teal-500/10 border border-teal-500/30 rounded-xl">
+                        <span class="text-xs font-bold text-teal-500 uppercase tracking-wider block mb-1">Estructura Válida (Gratuita)</span>
+                        <span class="font-mono text-slate-800 dark:text-slate-200 font-bold block">preprod-app.tudominio.com</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 mt-1 block">Cubierto directamente por el comodín gratuito *.tudominio.com.</span>
+                    </div>
+                </div>
+
+                <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b border-slate-200/60 dark:border-slate-800/50 pb-2">
+                    7. Despliegue de Ingress parametrizado
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    Finalmente, al definir el recurso <code>Ingress</code> en Kubernetes, hay un comportamiento de Traefik crucial a tener en cuenta: <strong>si declaras el campo <code>secretName</code> en la especificación TLS del Ingress, Traefik asumirá que gestionas tú mismo los certificados de forma manual</strong> y desactivará por completo su resolvedor Let's Encrypt automático, arrojando errores del tipo <code class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded font-mono text-sm text-rose-600 dark:text-rose-400">secret does not exist</code>.
+                </p>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    A continuación, se muestra una plantilla de Ingress Helm correcta que automatiza el aprovisionamiento omitiendo condicionalmente <code>secretName</code> cuando el resolvedor automático está configurado:
+                </p>
+
+                <div class="relative group my-6">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                        <button onclick="copyToClipboard(this)" class="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre class="bg-[#0b0f19] text-[#e2e8f0] rounded-xl p-6 overflow-x-auto font-mono text-sm leading-relaxed border border-outline-variant/30"><code class="block font-mono"><span class="text-teal-400">apiVersion</span>: networking.k8s.io/v1
+<span class="text-teal-400">kind</span>: Ingress
+<span class="text-teal-400">metadata</span>:
+  <span class="text-teal-400">name</span>: app-ingress
+  <span class="text-teal-400">annotations</span>:
+    <span class="text-slate-500"># 1. Habilitar enrutamiento TLS en Traefik</span>
+    <span class="text-teal-400">traefik.ingress.kubernetes.io/router.tls</span>: "true"
+    {{- if .Values.ingress.tlsResolver }}
+    <span class="text-slate-500"># 2. Especificar el resolvedor Let's Encrypt configurado</span>
+    <span class="text-teal-400">traefik.ingress.kubernetes.io/router.tls.certresolver</span>: {{ .Values.ingress.tlsResolver | quote }}
+    {{- end }}
+<span class="text-teal-400">spec</span>:
+  <span class="text-teal-400">ingressClassName</span>: {{ .Values.ingress.className | quote }}
+  {{- if or .Values.ingress.tlsSecret .Values.ingress.tlsResolver }}
+  <span class="text-teal-400">tls</span>:
+    - <span class="text-teal-400">hosts</span>:
+        - {{ .Values.ingress.host | quote }}
+      <span class="text-slate-500"># 3. Omitir por completo secretName si usamos resolvedor automático</span>
+      {{- if and .Values.ingress.tlsSecret (not .Values.ingress.tlsResolver) }}
+      <span class="text-teal-400">secretName</span>: {{ .Values.ingress.tlsSecret | quote }}
+      {{- end }}
+  {{- end }}
+  <span class="text-teal-400">rules</span>:
+    - <span class="text-teal-400">host</span>: {{ .Values.ingress.host | quote }}
+      <span class="text-teal-400">http</span>:
+        <span class="text-teal-400">paths</span>:
+          - <span class="text-teal-400">path</span>: /
+            <span class="text-teal-400">pathType</span>: Prefix
+            <span class="text-teal-400">backend</span>:
+              <span class="text-teal-400">service</span>:
+                <span class="text-teal-400">name</span>: app-gateway
+                <span class="text-teal-400">port</span>:
+                  <span class="text-teal-400">number</span>: 8080</code></pre>
+                </div>
+
                 <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mt-12 mb-12">
-                    Con este paso, el clúster está 100% operativo, asegurado, y listo para recibir manifiestos de aplicaciones con enrutamiento SSL nativo y persistencia local de datos.
+                    Con este diseño, el clúster bare-metal no es solo una instalación de laboratorio, sino una arquitectura de producción de alto rendimiento con eBPF puro, seguridad non-root blindada, y enrutamiento certificado y protegido contra escaneos directos gracias al perímetro de Cloudflare.
                 </p>
             </div>
         </article>
